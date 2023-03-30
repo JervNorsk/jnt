@@ -1,0 +1,18 @@
+{
+  "name": "io.github.jervnorsk.jnt.unity",
+  "version": "0.0.1",
+  "displayName": "JervNorsk Tool",
+  "type": "tool",
+  "unity": "2021.3",
+  "unityRelease": "12f1",
+  "documentationUrl": "https://jervnorsk.github.io/jnt/unity/wiki.html",
+  "changelogUrl": "https://jervnorsk.github.io/jnt/unity/changelog.html",
+  "licensesUrl": "https://jervnorsk.github.io/jnt/unity/licensing.html",
+  "keywords": [],
+  "author": {
+    "name": "JervNorsk",
+    "email": "jerv.norsk@gmail.com",
+    "url": "https://jervnorsk.github.io"
+  },
+  "hideInEditor": false
+}

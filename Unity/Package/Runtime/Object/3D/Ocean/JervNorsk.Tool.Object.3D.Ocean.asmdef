@@ -1,0 +1,16 @@
+{
+    "name": "JervNorsk.Tool.Object.3D.Ocean",
+    "rootNamespace": "",
+    "references": [
+        "JervNorsk.Tool.Util.Collection"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

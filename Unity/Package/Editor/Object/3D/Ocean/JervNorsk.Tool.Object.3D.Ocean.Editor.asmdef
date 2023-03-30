@@ -1,0 +1,18 @@
+{
+    "name": "JervNorsk.Tool.Object.3D.Ocean.Editor",
+    "rootNamespace": "",
+    "references": [
+        "JervNorsk.Tool.Object.3D.Ocean"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
