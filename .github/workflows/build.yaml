@@ -1,0 +1,59 @@
+on:
+  workflow_call:
+    inputs:
+      platform:
+        description: The platform that the artifact will be built for
+        type: string
+        required: true
+
+jobs:
+  execute:
+    name: Unity in ${{ inputs.platform }}
+    runs-on: ubuntu-latest
+#    steps:
+#      - id: set-artifact-platform
+#        run: |
+#          ENGINE_PLATFORM=${{ matrix.engine.platform }}
+#          echo "artifact-platform=${ENGINE_PLATFORM,,}" >> $GITHUB_OUTPUT
+#      - id: set-artifact-name
+#        run: |
+#          ARTIFACT_NAME="${{ needs.setup.outputs.artifact-name }}-${{ steps.set-artifact-platform.outputs.artifact-platform }}-${{ needs.setup.outputs.artifact-version }}"
+#          echo "artifact-name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+#      - uses: actions/checkout@v3
+#        with:
+#          ref: github/pages
+#      #      - uses: actions/cache@v3
+#      #        with:
+#      #          path: engines/unity/Library
+#      #          key: engine-unity-development-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+#      #          restore-keys: |
+#      #            engine-unity-development-
+#      #      - uses: game-ci/unity-builder@v2
+#      #        env:
+#      #          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+#      #          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+#      #          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+#      #        with:
+#      #          projectPath: engines/unity
+#      #          targetPlatform: ${{ matrix.engine.platform }}
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: ${{ steps.set-artifact-name.outputs.artifact-name }}
+#          #          path: build/${{ matrix.engine.platform }}
+#          path: ./artifact/stellar-rebirth-snapshot.zip
+#    outputs:
+#      artifact-name: ${{ steps.set-artifact-name.outputs.artifact-name }}
+#      artifact-platform: ${{ steps.set-artifact-platform.outputs.artifact-platform }}
+
+#  deploy:
+#    if: ${{  }}
+#    name: Deploy ${{ needs.execute.outputs.artifact-platform }}
+#    needs:
+#      - execute
+#    uses: jervnorsk/stellar-rebirth/.github/workflows/deployment.yaml@github/environments/itch
+#    with:
+#      itch-api-token-key: BUTLER_API_KEY
+#      src-artifact-name: ${{ needs.build.outputs.artifact-name }}
+#      itch-build-channel: ${{ needs.build.outputs.artifact-platform }}
+#      itch-build-version: ${{ needs.setup.outputs.artifact-version }}
+#    secrets: inherit
