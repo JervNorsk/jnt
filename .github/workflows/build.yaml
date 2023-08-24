@@ -1,59 +1,122 @@
 on:
   workflow_call:
     inputs:
-      platform:
-        description: The platform that the artifact will be built for
+      build-on:
+        description: The platform on which the artifact will be built
         type: string
         required: true
+      deploy-on:
+        description: The environment where the artifact will be deployed
+        type: string
+        required: false
+
+      from-repository:
+        description: The repository from which the workspace will be cloned
+        type: string
+        default: ${{ github.repository }}
+      from-repository-ref:
+        description: The reference of the repository to which the workspace will be aligned
+        type: string
+        default: ${{ github.ref }}
+
+      cache-key:
+        description: Use cache to reduce build time
+        type: string
+
+      project-path:
+        description: The path of the project
+        type: string
+        required: true
+      project-name:
+        description: The name of the project
+        type: string
+        default: ${{ github.event.repository.name }}
+      project-version:
+        description: The version of the project
+        type: string
+        default: ${{ github.ref_name }}
+
+      unity-license-key:
+        description: Unity license key (from secrets)
+        type: string
+        default: UNITY_LICENSE
+      unity-email-key:
+        description: Unity email key (from secrets)
+        type: string
+        default: UNITY_EMAIL
+      unity-password-key:
+        description: Unity password key (from secrets)
+        type: string
+        default: UNITY_PASSWORD
+
+    outputs:
+      artifact-name:
+        description: The artifact name stored in the workflow
+        value: ${{ jobs.execute.outputs.artifact-name }}
+      artifact-platform:
+        description: The artifact platform in lowercase
+        value: ${{ jobs.execute.outputs.artifact-platform }}
+      artifact-version:
+        description: The artifact version
+        value: ${{ jobs.execute.outputs.artifact-version }}
 
 jobs:
   execute:
-    name: Unity in ${{ inputs.platform }}
+    name: Build
     runs-on: ubuntu-latest
-#    steps:
-#      - id: set-artifact-platform
-#        run: |
-#          ENGINE_PLATFORM=${{ matrix.engine.platform }}
-#          echo "artifact-platform=${ENGINE_PLATFORM,,}" >> $GITHUB_OUTPUT
-#      - id: set-artifact-name
-#        run: |
-#          ARTIFACT_NAME="${{ needs.setup.outputs.artifact-name }}-${{ steps.set-artifact-platform.outputs.artifact-platform }}-${{ needs.setup.outputs.artifact-version }}"
-#          echo "artifact-name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
-#      - uses: actions/checkout@v3
-#        with:
-#          ref: github/pages
-#      #      - uses: actions/cache@v3
-#      #        with:
-#      #          path: engines/unity/Library
-#      #          key: engine-unity-development-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-#      #          restore-keys: |
-#      #            engine-unity-development-
-#      #      - uses: game-ci/unity-builder@v2
-#      #        env:
-#      #          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-#      #          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-#      #          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-#      #        with:
-#      #          projectPath: engines/unity
-#      #          targetPlatform: ${{ matrix.engine.platform }}
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ steps.set-artifact-name.outputs.artifact-name }}
-#          #          path: build/${{ matrix.engine.platform }}
-#          path: ./artifact/stellar-rebirth-snapshot.zip
-#    outputs:
-#      artifact-name: ${{ steps.set-artifact-name.outputs.artifact-name }}
-#      artifact-platform: ${{ steps.set-artifact-platform.outputs.artifact-platform }}
+    steps:
+      - id: set-artifact-platform
+        run: |
+          ENGINE_PLATFORM=${{ inputs.build-on }}
+          echo "artifact-platform=${ENGINE_PLATFORM,,}" >> $GITHUB_OUTPUT
+      - id: set-artifact-version
+        run: |
+          ARTIFACT_VERSION=$(echo '${{ inputs.project-version }}' | cut -d/ -f3- | cut -dv -f2-)
+          echo "artifact-version=${ARTIFACT_VERSION}" >> $GITHUB_OUTPUT
+      - id: set-artifact-name
+        run: |
+          ARTIFACT_NAME="${{ inputs.project-name }}"
+          ARTIFACT_NAME="$ARTIFACT_NAME-${{ steps.set-artifact-version.outputs.artifact-version }}"
+          ARTIFACT_NAME="$ARTIFACT_NAME-${{ steps.set-artifact-platform.outputs.artifact-platform }}"
+          echo "artifact-name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.from-repository }}
+          ref: ${{ inputs.from-repository-ref }}
+      - if: ${{ inputs.cache-key }}
+        uses: actions/cache@v3
+        with:
+          path: ${{ inputs.project-path }}/Library
+          key: ${{ inputs.cache-key }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            ${{ inputs.cache-key }}-
+      - uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets[inputs.unity-license-key] }}
+          UNITY_EMAIL: ${{ secrets[inputs.unity-email] }}
+          UNITY_PASSWORD: ${{ secrets[inputs.unity-password] }}
+        with:
+          projectPath: engines/unity
+          targetPlatform: ${{ inputs.build-on }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.set-artifact-name.outputs.artifact-name }}
+          path: build/${{ inputs.build-on }}
+    outputs:
+      artifact-platform: ${{ steps.set-artifact-platform.outputs.artifact-platform }}
+      artifact-version: ${{ steps.set-artifact-version.outputs.artifact-version }}
+      artifact-name: ${{ steps.set-artifact-name.outputs.artifact-name }}
 
-#  deploy:
-#    if: ${{  }}
-#    name: Deploy ${{ needs.execute.outputs.artifact-platform }}
-#    needs:
-#      - execute
-#    uses: jervnorsk/stellar-rebirth/.github/workflows/deployment.yaml@github/environments/itch
-#    with:
-#      itch-api-token-key: BUTLER_API_KEY
-#      src-artifact-name: ${{ needs.build.outputs.artifact-name }}
-#      itch-build-channel: ${{ needs.build.outputs.artifact-platform }}
-#      itch-build-version: ${{ needs.setup.outputs.artifact-version }}
-#    secrets: inherit
+  # TODO: Remove when https://github.com/actions/runner/pull/2477 is pushed from GitHub!
+  deploy:
+    if: ${{ inputs.deploy-on == 'itch' }}
+    name: Deploy
+    needs:
+      - execute
+    uses: jervnorsk/stellar-rebirth/.github/workflows/deployment.yaml@github/environments/itch
+    with:
+      itch-api-token-key: BUTLER_API_KEY
+      itch-build-channel: ${{ needs.execute.outputs.artifact-platform }}
+      itch-build-version: ${{ needs.execute.outputs.artifact-version }}
+      from-artifact: ${{ needs.execute.outputs.artifact-name }}
+    secrets: inherit
