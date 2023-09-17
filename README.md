@@ -1,2 +1,3 @@
-# JNT
-A collection of plugins for various softwares
+## JervNorsk's Toolkit  
+
+A collection of plugins for various software programs.
