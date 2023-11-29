@@ -113,7 +113,7 @@ jobs:
     name: Deploy
     needs:
       - execute
-    uses: jervnorsk/stellar-rebirth/.github/workflows/deployment.yaml@github/environments/itch
+    uses: jervnorsk/jnt/.github/workflows/deploy.yaml@integration/github/action/itch
     with:
       itch-api-token-key: BUTLER_API_KEY
       itch-build-channel: ${{ needs.execute.outputs.artifact-platform }}
