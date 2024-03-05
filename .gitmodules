@@ -1,0 +1,3 @@
+[submodule "integrations/github"]
+	path = integrations/github
+	url = https://github.com/JervNorsk/jnt-github.git
