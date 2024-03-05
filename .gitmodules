@@ -7,3 +7,6 @@
 [submodule "services/vtuber"]
 	path = services/vtuber
 	url = https://github.com/JervNorsk/jnt-vtuber.git
+[submodule "integrations/ansible"]
+	path = integrations/ansible
+	url = https://github.com/JervNorsk/jnt-ansible.git
