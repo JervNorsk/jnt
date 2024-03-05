@@ -4,3 +4,6 @@
 [submodule "integrations/blender"]
 	path = integrations/blender
 	url = https://github.com/JervNorsk/jnt-blender.git
+[submodule "services/vtuber"]
+	path = services/vtuber
+	url = https://github.com/JervNorsk/jnt-vtuber.git
