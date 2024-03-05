@@ -1,3 +1,6 @@
 [submodule "integrations/github"]
 	path = integrations/github
 	url = https://github.com/JervNorsk/jnt-github.git
+[submodule "integrations/blender"]
+	path = integrations/blender
+	url = https://github.com/JervNorsk/jnt-blender.git
