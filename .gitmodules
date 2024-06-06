@@ -4,3 +4,6 @@
 [submodule "integrations/blender"]
 	path = integrations/blender
 	url = https://github.com/JervNorsk/jnt-blender.git
+[submodule "integrations/gradle"]
+	path = integrations/gradle
+	url = https://github.com/JervNorsk/jnt-gradle.git
