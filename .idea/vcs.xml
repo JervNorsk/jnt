@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/blender" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/github" vcs="Git" />
   </component>
 </project>
