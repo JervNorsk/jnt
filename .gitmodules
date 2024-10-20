@@ -7,3 +7,6 @@
 [submodule "integrations/gradle"]
 	path = integrations/gradle
 	url = https://github.com/JervNorsk/jnt-gradle.git
+[submodule "integrations/comfyui"]
+	path = integrations/comfyui
+	url = https://github.com/JervNorsk/jnt-comfyui.git
