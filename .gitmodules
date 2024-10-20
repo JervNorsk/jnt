@@ -10,3 +10,6 @@
 [submodule "integrations/comfyui"]
 	path = integrations/comfyui
 	url = https://github.com/JervNorsk/jnt-comfyui.git
+[submodule "integrations/pixel-composer"]
+	path = integrations/pixel-composer
+	url = https://github.com/JervNorsk/jnt-pixel-composer.git
