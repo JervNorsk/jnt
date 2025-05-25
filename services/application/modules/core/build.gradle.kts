@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -5,7 +6,9 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinComposePlugin)
     alias(libs.plugins.kotlinComposeMultiplatform)
+    // ------------------------------------------------------------------------
     alias(libs.plugins.androidApplication)
+//    alias(libs.plugins.androidLibraryKMP)
 }
 
 dependencies {
@@ -13,6 +16,13 @@ dependencies {
 }
 
 kotlin {
+//    androidLibrary { // TODO: REQUIRE DEDICATED PLUGIN WITH COMPOSE RESOLUTION
+//        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+//
+//        namespace = project.group.toString()
+//        compileSdk = libs.versions.android.compileSdk.get().toInt()
+//        minSdk = libs.versions.android.minSdk.get().toInt()
+//    }
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -42,6 +52,16 @@ kotlin {
     }
 }
 
+compose {
+    resources {
+        packageOfResClass = "${group}.assets"
+        customDirectory(
+            sourceSetName = "commonMain",
+            directoryProvider = provider { layout.projectDirectory.dir("src").dir("commonMain").dir("assets") }
+        )
+    }
+}
+
 android {
     namespace = project.group.toString()
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -54,11 +74,11 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
     }
-//    packaging {
-//        resources {
-//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-//        }
-//    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 //    buildTypes {
 //        release {
 //            isMinifyEnabled = false
