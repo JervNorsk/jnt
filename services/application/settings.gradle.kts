@@ -1,4 +1,24 @@
-rootProject.name = "android-key-mapper"
+rootProject.apply {
+    name = "jnt-application"
+
+    // ------------------------------------------------------------------------
+    // Modules
+    // ------------------------------------------------------------------------
+    projectDir
+        .listFiles()
+        ?.filter { it -> it.isDirectory }
+        ?.filter { it -> it.name in arrayOf("modules") }
+        ?.forEach {
+            it.listFiles()
+                ?.forEach { file ->
+                    include(":${file.name}")
+                    project(":${file.name}").apply {
+                        projectDir = file
+                    }
+                }
+        }
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -27,6 +47,3 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
-include(":modules:application")
-

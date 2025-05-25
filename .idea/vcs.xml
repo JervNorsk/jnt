@@ -2,5 +2,16 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/blender/services/core/blender" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-docker" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-docker-sdf-webui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-suite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-suite/libs/ltdrdata/impact-pack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-suite/libs/ltdrdata/inspire-pack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-suite/libs/pythongosssss/custom-scripts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/comfyui/modules/comfyui-suite/libs/pythongosssss/wd14-tagger" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/godot/modules/godot-engine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/godot/modules/godot-javascript" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/integrations/pixel-composer/modules/core" vcs="Git" />
   </component>
 </project>
